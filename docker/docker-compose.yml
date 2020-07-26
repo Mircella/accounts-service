@@ -1,0 +1,55 @@
+version: '2.2'
+services:
+  accounts-postgresql:
+    build: .
+    image: accounts-postgres
+    container_name: accounts-postgresql
+    volumes:
+    - postgres-data:/var/lib/postgresql/data
+    ports:
+      - 5430:5432
+    networks:
+      - esnet
+  accounts-kafka:
+    image: landoop/fast-data-dev
+    container_name: accounts-kafka
+    volumes:
+    - zookeeper-data:/var/lib/zookeeper/data
+    - zookeeper-log:/var/lib/zookeeper/log
+    - kafka-data:/var/lib/kafka/data
+    environment:
+      - "ADV_HOST=127.0.0.1"
+    ports:
+      - "2181:2181"
+      - "3030:3030"
+      - "8081-8083:8081-8083"
+      - "9581-9585:9581-9585"
+      - "9092:9092"
+networks:
+  esnet:
+
+volumes:
+  postgres-data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '${PWD}/data/postgres'
+  zookeeper-data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '${PWD}/data/zookeeper/data'
+  zookeeper-log:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '${PWD}/data/zookeeper/log'
+  kafka-data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '${PWD}/data/kafka'

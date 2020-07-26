@@ -1,0 +1,46 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5430/accounts
+    driver-class-name: org.postgresql.Driver
+    username: accounts
+    password: accounts
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        temp.use_jdbc_metadata_defaults: false
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+  jdbc:
+    template:
+      fetch-size: 10
+      max-rows: 10
+  kafka:
+    producer:
+      bootstrap-servers: "127.0.0.1:9092"
+      retries: 100
+      batch-size: 32768
+      buffer-memory:
+      compression-type: snappy
+      acks: all
+      properties:
+        enable-idempotence: true
+        linger-ms: 20
+        max-in-flight-requests-per-connection: 5
+    consumer:
+      bootstrap-servers: "127.0.0.1:9092"
+      group-id: accounts
+      max-poll-records: 2
+
+elasticsearch:
+  host: kafka-learning-2812223976.eu-central-1.bonsaisearch.net
+  port: 443
+  connect-timeout: 10000
+  request-timeout: 30000
+server:
+  port: 8776
+http-client:
+  log-level: BASIC
+  follow-redirects: true
+
