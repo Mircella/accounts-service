@@ -1,26 +1,27 @@
 package kz.mircella.accounts.infrastructure.security
 
 import kz.mircella.accounts.infrastructure.security.auth.UserService
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.annotation.Order
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.AuthenticationProvider
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper
-import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.NoOpPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 
-
+//@Order(99)
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@ConditionalOnProperty("security.enabled", havingValue = "true")
 class ApplicationSecurityConfiguration(
         private val userService: UserService,
         private val authenticationProvider: AuthenticationProvider
@@ -53,6 +54,10 @@ class ApplicationSecurityConfiguration(
         auth.authenticationProvider(authenticationProvider)
     }
 
+    override fun configure(web: WebSecurity?) {
+        super.configure(web)
+    }
+
     @Bean
     @Throws(Exception::class)
     override fun authenticationManagerBean(): AuthenticationManager {
@@ -62,7 +67,13 @@ class ApplicationSecurityConfiguration(
 
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
-        http.anonymous().disable().csrf().disable()
+        http
+                .authorizeRequests()
+                .requestMatchers(EndpointRequest.to("health")).permitAll()
+                .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ACTUATOR")
+                .and()
+//                .anonymous().disable()
+                .csrf().disable()
 //        http
 //                .csrf().disable()
 //                .authorizeRequests()

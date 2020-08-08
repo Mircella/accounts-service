@@ -1,6 +1,7 @@
 package kz.mircella.accounts.infrastructure.security.authzserver
 
 import kz.mircella.accounts.infrastructure.security.auth.UserService
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
@@ -20,9 +21,9 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import java.security.KeyPair
 import javax.sql.DataSource
 
-
 @EnableAuthorizationServer
 @Configuration
+@ConditionalOnProperty("security.enabled", havingValue = "true", matchIfMissing = false)
 class AuthorizationServerConfig(
         private val userService: UserService,
         private val dataSource: DataSource,

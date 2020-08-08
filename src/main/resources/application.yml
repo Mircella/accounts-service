@@ -44,6 +44,9 @@ http-client:
   log-level: BASIC
   follow-redirects: true
 
+security:
+  enabled: false
+
 jwt.jwks:
   publicKey: |
               -----BEGIN PUBLIC KEY-----

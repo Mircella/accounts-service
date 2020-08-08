@@ -12,9 +12,9 @@ import org.springframework.security.core.userdetails.UserDetails
 class RestUserController{
     @RequestMapping("/api/users/me")
     fun profile(): ResponseEntity<UserProfile>? { //Build some dummy data to return for testing
-        val user = SecurityContextHolder.getContext().authentication as UsernamePasswordAuthenticationToken
-        val email: String = user.name + "@howtodoinjava.com"
-        val profile = UserProfile(user.name, email)
+//        val user = SecurityContextHolder.getContext().authentication as UsernamePasswordAuthenticationToken
+        val email: String = "user" + "@howtodoinjava.com"
+        val profile = UserProfile("user", email)
         return ResponseEntity.ok<UserProfile>(profile)
     }
 }
