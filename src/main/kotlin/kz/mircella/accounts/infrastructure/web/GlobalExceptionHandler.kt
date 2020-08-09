@@ -1,5 +1,8 @@
 package kz.mircella.accounts.infrastructure.web
 
+import kz.mircella.accounts.domain.accounts.Account
+import kz.mircella.accounts.infrastructure.accounts.AccountNotFound
+import kz.mircella.accounts.infrastructure.accounts.AccountWithSuchLoginAlreadyExists
 import kz.mircella.accounts.infrastructure.exceptions.ESIndexAlreadyExists
 import kz.mircella.accounts.infrastructure.exceptions.ESIndexNotFound
 import kz.mircella.accounts.infrastructure.exceptions.ElasticSearchError
@@ -24,6 +27,8 @@ class GlobalExceptionHandler {
         registerMapping(ESIndexNotFound::class.java, ServiceError.INDEX_NOT_FOUND)
         registerMapping(ESIndexAlreadyExists::class.java, ServiceError.INDEX_ALREADY_EXISTS)
         registerMapping(UserNotFound::class.java, ServiceError.NOT_FOUND)
+        registerMapping(AccountNotFound::class.java, ServiceError.NOT_FOUND)
+        registerMapping(AccountWithSuchLoginAlreadyExists::class.java, ServiceError.LOGIN_ALREADY_EXISTS)
     }
 
     @ExceptionHandler(Exception::class)

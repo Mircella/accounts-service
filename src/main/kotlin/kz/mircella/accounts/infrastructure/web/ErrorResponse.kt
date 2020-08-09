@@ -2,13 +2,14 @@ package kz.mircella.accounts.infrastructure.web
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.annotation.JsonUnwrapped
 import kz.mircella.accounts.infrastructure.web.ServiceError.Code
 import kz.mircella.accounts.infrastructure.web.ServiceError.DeveloperMessage
 import org.springframework.http.HttpStatus
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-class ErrorResponse(val status: HttpStatus, val code: Code, val developerMessage: DeveloperMessage) {
+class ErrorResponse(val status: HttpStatus, val code: Code, @JsonUnwrapped val developerMessage: DeveloperMessage) {
 
     class Builder {
 

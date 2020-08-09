@@ -20,6 +20,10 @@ enum class ServiceError(val status: HttpStatus, val code: Code) {
             HttpStatus.NOT_FOUND,
             Code.NOT_FOUND
     ),
+    LOGIN_ALREADY_EXISTS(
+            HttpStatus.BAD_REQUEST,
+            Code.LOGIN_ALREADY_EXISTS
+    ),
     INTERNAL_SYSTEM_ERROR(
             HttpStatus.INTERNAL_SERVER_ERROR,
             Code.INTERNAL_ERROR
@@ -30,7 +34,8 @@ enum class ServiceError(val status: HttpStatus, val code: Code) {
         INDEX_ALREADY_EXISTS("IndexAlreadyExists"),
         INDEX_NOT_FOUND("IndexNotFound"),
         NOT_FOUND("NotFound"),
-        INVALID_REQUEST("InvalidRequest");
+        INVALID_REQUEST("InvalidRequest"),
+        LOGIN_ALREADY_EXISTS("LoginAlreadyExists");
     }
 
     data class DeveloperMessage(val message: String)
