@@ -1,4 +1,4 @@
-package kz.mircella.accounts
+package kz.mircella.accounts.infrastructure.accounts
 
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Component
